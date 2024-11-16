@@ -1,0 +1,9 @@
+(function() {
+    var implementors = Object.fromEntries([["lexer",[["impl&lt;'s&gt; <a class=\"trait\" href=\"https://doc.rust-lang.org/nightly/core/ops/deref/trait.DerefMut.html\" title=\"trait core::ops::deref::DerefMut\">DerefMut</a> for <a class=\"struct\" href=\"lexer/items/item/assign_expr/assign/struct.Assign.html\" title=\"struct lexer::items::item::assign_expr::assign::Assign\">Assign</a>&lt;'s&gt;"],["impl&lt;'s&gt; <a class=\"trait\" href=\"https://doc.rust-lang.org/nightly/core/ops/deref/trait.DerefMut.html\" title=\"trait core::ops::deref::DerefMut\">DerefMut</a> for <a class=\"struct\" href=\"lexer/items/item/ident/struct.Ident.html\" title=\"struct lexer::items::item::ident::Ident\">Ident</a>&lt;'s&gt;"],["impl&lt;'s&gt; <a class=\"trait\" href=\"https://doc.rust-lang.org/nightly/core/ops/deref/trait.DerefMut.html\" title=\"trait core::ops::deref::DerefMut\">DerefMut</a> for <a class=\"struct\" href=\"lexer/items/shared/distribution/struct.Distribution.html\" title=\"struct lexer::items::shared::distribution::Distribution\">Distribution</a>&lt;'s&gt;"],["impl&lt;'s&gt; <a class=\"trait\" href=\"https://doc.rust-lang.org/nightly/core/ops/deref/trait.DerefMut.html\" title=\"trait core::ops::deref::DerefMut\">DerefMut</a> for <a class=\"struct\" href=\"lexer/items/shared/whitespaces/struct.Whitespaces.html\" title=\"struct lexer::items::shared::whitespaces::Whitespaces\">Whitespaces</a>&lt;'s&gt;"],["impl&lt;'s&gt; <a class=\"trait\" href=\"https://doc.rust-lang.org/nightly/core/ops/deref/trait.DerefMut.html\" title=\"trait core::ops::deref::DerefMut\">DerefMut</a> for <a class=\"struct\" href=\"lexer/items/struct.Items.html\" title=\"struct lexer::items::Items\">Items</a>&lt;'s&gt;"]]]]);
+    if (window.register_implementors) {
+        window.register_implementors(implementors);
+    } else {
+        window.pending_implementors = implementors;
+    }
+})()
+//{"start":57,"fragment_lengths":[1670]}

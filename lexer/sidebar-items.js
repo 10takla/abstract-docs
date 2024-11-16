@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["parse"],"macro":["parse_variants"],"mod":["items"],"struct":["Code","Slice"],"trait":["Parse","Slicable"]};

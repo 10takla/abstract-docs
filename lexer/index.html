@@ -1,0 +1,74 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Лексер парсит конструкции языка из строки кода с помощью трекера `Code`. `Code` следит за исходной строкой кода, предотвращая ее клонировние следуя единному время жизни - временни жизни исходной строки:"><title>lexer - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../static.files/rustdoc-b0742ba02757f159.css"><meta name="rustdoc-vars" data-root-path="../" data-static-root-path="../static.files/" data-current-crate="lexer" data-themes="" data-resource-suffix="" data-rustdoc-version="1.83.0-nightly (1bc403daa 2024-10-11)" data-channel="nightly" data-search-js="search-e056c65ede92db13.js" data-settings-js="settings-805db61a62df4bd2.js" ><script src="../static.files/storage-1d39b6787ed640ff.js"></script><script defer src="../crates.js"></script><script defer src="../static.files/main-f070b9041d14864c.js"></script><noscript><link rel="stylesheet" href="../static.files/noscript-0111fcff984fae8f.css"></noscript><link rel="alternate icon" type="image/png" href="../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc mod crate"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button></nav><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../lexer/index.html">lexer</a><span class="version">0.0.0</span></h2></div><div class="sidebar-elems"><ul class="block"><li><a id="all-types" href="all.html">All Items</a></li></ul><section id="rustdoc-toc"><h3><a href="#">Sections</a></h3><ul class="block top-toc"><li><a href="#Этика-кодирования" title="Этика кодирования">Этика кодирования</a></li></ul><h3><a href="#modules">Crate Items</a></h3><ul class="block"><li><a href="#modules" title="Modules">Modules</a></li><li><a href="#macros" title="Macros">Macros</a></li><li><a href="#structs" title="Structs">Structs</a></li><li><a href="#traits" title="Traits">Traits</a></li><li><a href="#functions" title="Functions">Functions</a></li></ul></section><div id="rustdoc-modnav"></div></div></nav><div class="sidebar-resizer"></div><main><div class="width-limiter"><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1>Crate <span>lexer</span><button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"></span></div><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Лексер парсит конструкции языка из строки кода с помощью трекера <a href="struct.Code.html" title="struct lexer::Code"><code>Code</code></a>.<br />
+<a href="struct.Code.html" title="struct lexer::Code"><code>Code</code></a> следит за исходной строкой кода, предотвращая ее клонировние следуя единному время жизни - временни жизни исходной строки:</p>
+<ul>
+<li><code>'s</code> (source) - время жизни исходной строки</li>
+</ul>
+<h2 id="Этика-кодирования"><a class="doc-anchor" href="#Этика-кодирования">§</a>Этика кодирования</h2>
+<p>Необходимо стремится к единному формату, разгроможадющему код, минимизируя избыточность код.
+В качестве написания более чистого, но ненадоедливого кода:</p>
+<ol>
+<li>
+<p>Использования фукнционального итерирования, например: <code>iter</code>, <code>iter_mut</code>, <code>into_iter</code>, и др. для быстрого итерирования, не нарушающее семантику всего кода, также для простого и алгоритмически не сложного кода.
+Например, тело итерации в котором важно испольнение какого-либо сложного алгоритма, с захватом внешних элементов, вполне имеет право иметь использование циклов <code>for</code>, <code>while</code></p>
+</li>
+<li>
+<p>Имена вспомогательных переменных, которые не нарушают семантику кода, например:</p>
+<ul>
+<li>перменная <code>item</code>: <code>boxes.iter().map(|item| ...)</code>,</li>
+<li>перменная <code>i</code>: <code>.iter().enumerate().map(|(i, _)| ...)</code></li>
+</ul>
+<p>обозначаются:
+- <code>i</code> - любой числовой индекс
+- <code>v</code> (<code>value</code>) - любая переменная, которая хранит в себе какое-либо итерируемое значение</p>
+<p>Пример:</p>
+<ol>
+<li>
+<p><code>.enumerate().map(|(i, v)| ...)</code>
+– валидно, так как функциональная итерация удобна для быстрого итерирования</p>
+</li>
+<li></li>
+</ol>
+
+<div class="example-wrap ignore"><a href="#" class="tooltip" title="This example is not tested">ⓘ</a><pre class="rust rust-example-rendered"><code><span class="kw">for </span>(i, v) <span class="kw">in </span>items.iter().enumerate {
+    ...
+}</code></pre></div>
+<p>– не валидно, так как <code>for</code> прдполагает больший код в теле, или импользуется для прямого взаимодействия с внешиними элементами</p>
+</li>
+<li>
+<p>Использовать минимаьное количество указаний типов, полагаясь на вывод типа <code>rustc</code>.
+Для подсказки вывода типов <code>rustc</code> использовать правосторонее обозначение.</p>
+<p>Например:</p>
+<ul>
+<li><code>let num = get_num::&lt;i32&gt;();</code> – валдино</li>
+<li><code>let num: i32 = get_num();</code> – не валидно</li>
+</ul>
+</li>
+<li>
+<p>Для имен переменных, структур и в общем <a href="https://doc.rust-lang.org/reference/items.html">Items</a>
+следовать:</p>
+<ul>
+<li>
+<p><u>Сокращение имен</u> (rust-овский стить), но не переусердсвуя, дабы сохранить контекст или сеамнтику кода.
+Например:</p>
+<ul>
+<li><code>sturcture</code> -&gt; <code>struct</code></li>
+<li><code>deserialize</code> -&gt; <code>deser</code></li>
+<li><code>deserializer</code> -&gt; <code>deser</code> | <code>deserializer</code> - в зависимости от контекста использования</li>
+<li><code>expression</code> -&gt; <code>expr</code> - однозначно</li>
+</ul>
+</li>
+<li>
+<p><u>Подор имен</u></p>
+<p>Для длинных имен, запутывающих код, использовать короткие английские эквиваленты, более читаемые и популярные.</p>
+<p>Например:</p>
+<ul>
+<li>вместо <code>id</code> - <code>index</code>, а лучше <code>i</code></li>
+<li>вместо <code>number</code> - <code>cost</code>, <code>count</code> или любое более понятное имя, приближенное к контексту использования</li>
+</ul>
+</li>
+</ul>
+<p>Быстрые лямбды - <code>fast</code>
+Быстрые проверки, напрмиер для тестов - <code>check</code></p>
+</li>
+</ol>
+</div></details><h2 id="modules" class="section-header">Modules<a href="#modules" class="anchor">§</a></h2><ul class="item-table"><li><div class="item-name"><a class="mod" href="items/index.html" title="mod lexer::items">items</a></div></li></ul><h2 id="macros" class="section-header">Macros<a href="#macros" class="anchor">§</a></h2><ul class="item-table"><li><div class="item-name"><a class="macro" href="macro.parse_variants.html" title="macro lexer::parse_variants">parse_<wbr>variants</a></div></li></ul><h2 id="structs" class="section-header">Structs<a href="#structs" class="anchor">§</a></h2><ul class="item-table"><li><div class="item-name"><a class="struct" href="struct.Code.html" title="struct lexer::Code">Code</a></div></li><li><div class="item-name"><a class="struct" href="struct.Slice.html" title="struct lexer::Slice">Slice</a></div></li></ul><h2 id="traits" class="section-header">Traits<a href="#traits" class="anchor">§</a></h2><ul class="item-table"><li><div class="item-name"><a class="trait" href="trait.Parse.html" title="trait lexer::Parse">Parse</a></div></li><li><div class="item-name"><a class="trait" href="trait.Slicable.html" title="trait lexer::Slicable">Slicable</a></div></li></ul><h2 id="functions" class="section-header">Functions<a href="#functions" class="anchor">§</a></h2><ul class="item-table"><li><div class="item-name"><a class="fn" href="fn.parse.html" title="fn lexer::parse">parse</a></div></li></ul></section></div></main></body></html>
